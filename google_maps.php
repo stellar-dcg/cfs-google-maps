@@ -15,7 +15,8 @@ class cfs_google_maps extends cfs_field
         <script>
         (function($) {
             $(function() {
-                var map = new google.maps.Map(document.getElementById('map_canvas'), {
+                var $canvas = $('#map_canvas_<?php echo $field->id?>');
+                var map = new google.maps.Map($canvas.get(0), {
                     zoom: 4,
                     center: new google.maps.LatLng(<?php echo $latlng; ?>),
                     mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -29,21 +30,21 @@ class cfs_google_maps extends cfs_field
 
                 google.maps.event.addListener(map, 'click', function(event) {
                     marker.setPosition(event.latLng);
-                    $('#map_canvas').closest('.field').find('input.google_maps').val(event.latLng.toUrlValue());
+                    $canvas.closest('.field').find('input.google_maps').val(event.latLng.toUrlValue());
                 });
 
                 google.maps.event.addListener(marker, 'click', function(event) {
                     marker.setPosition(null);
-                    $('#map_canvas').closest('.field').find('input.google_maps').val('');
+                    $canvas.closest('.field').find('input.google_maps').val('');
                 });
 
                 google.maps.event.addListener(marker, 'dragend', function(event) {
-                    $('#map_canvas').closest('.field').find('input.google_maps').val(event.latLng.toUrlValue());
+                    $canvas.closest('.field').find('input.google_maps').val(event.latLng.toUrlValue());
                 });
             });
         })(jQuery);
         </script>
-        <div id="map_canvas" style="width:100%; height:250px"></div>
+        <div id="map_canvas_<?php echo $field->id?>" style="width:100%; height:250px"></div>
         <input type="hidden" name="<?php echo $field->input_name; ?>" class="<?php echo $field->input_class; ?>" value="<?php echo $field->value; ?>" />
     <?php
     }
